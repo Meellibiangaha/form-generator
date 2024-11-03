@@ -1,1 +1,5 @@
-<p>test-select works!</p>
+<select>
+  <ng-container *ngFor="let option of options">
+    <option [value]="option.id">{{ option.name }}</option>
+  </ng-container>
+</select>

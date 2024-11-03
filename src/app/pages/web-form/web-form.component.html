@@ -1,9 +1,25 @@
 <div class="back">
   <button class="back-btn" [routerLink]="'/home'">На главную</button>
 </div>
-<div class="form">
-  <app-test-input
-    [placeholder]="'Например, ВолгГУ'"
-    [summary]="'Укажите заведения, в которых вы учились.'"
-  />
+<div class="form" [formGroup]="formGroup">
+  <ng-container *ngFor="let control of webFormData?.controls">
+    <label>{{ control.label }}</label>
+    <div [ngSwitch]="control.type">
+      <div *ngSwitchCase="IT.InputCheckbox" class="checkbox-wrapper">
+        <ng-container *ngFor="let item of checkboxItems()">
+          <app-test-checkbox [item]="item" />
+        </ng-container>
+      </div>
+      <app-test-input
+        *ngSwitchCase="IT.InputText"
+        [placeholder]="'Например, ВолгГУ'"
+        [summary]="'Укажите заведения, в которых вы учились.'"
+      />
+      <app-test-number *ngSwitchCase="IT.InputNumber" />
+      <app-test-select
+        *ngSwitchCase="IT.InputSelect"
+        [options]="selectOptions()"
+      />
+    </div>
+  </ng-container>
 </div>

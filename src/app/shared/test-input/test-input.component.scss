@@ -1,0 +1,14 @@
+:host {
+  input {
+    border: 1px solid #c3c3c3;
+    &:hover {
+      border: 1px solid #aaaaaa;
+    }
+  }
+}
+.input-summary {
+  font-family: PT Sans;
+  font-size: 13px;
+  line-height: 16.82px;
+  background: #9d9d9d;
+}

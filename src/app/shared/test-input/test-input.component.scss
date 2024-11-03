@@ -1,14 +1,27 @@
 :host {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   input {
+    padding: 12px 15px;
+    max-height: 44px;
+
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-size: 17px;
+    line-height: 22px;
+
     border: 1px solid #c3c3c3;
     &:hover {
       border: 1px solid #aaaaaa;
     }
+    &::-webkit-input-placeholder {
+      font-family: Roboto, "Helvetica Neue", sans-serif;
+    }
   }
 }
 .input-summary {
-  font-family: PT Sans;
   font-size: 13px;
   line-height: 16.82px;
-  background: #9d9d9d;
+  color: #9d9d9d;
 }

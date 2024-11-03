@@ -1,1 +1,10 @@
-<p>home works!</p>
+<div class="home">
+  <div class="wrapper-flex">
+    <app-tab-btn [btnText]="'Анкета'" [routerLink]="'web-form'"/>
+    <app-tab-btn [btnText]="'Редактировать анкету (LocalStorage)'" />
+    <app-tab-btn [btnText]="'Редактировать анкету (эмулирую ответ сервера)'" />
+  </div>
+</div>
+<div class="main">
+  <router-outlet></router-outlet>
+</div>

@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { WebFormRepository } from './web-from.repository';
 import { catchError, Observable, of, throwError } from 'rxjs';
+import { JsonForm } from '../../core/models/json-form';
 
 @Injectable({
   providedIn: 'any',
 })
 export class WebFormService {
   constructor(private repository: WebFormRepository) {}
-  loadForm(): Observable<any> {
+  loadForm(): Observable<JsonForm> {
     return this.repository.loadForm().pipe(
       catchError((reason) => {
         console.error(reason);

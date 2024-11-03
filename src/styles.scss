@@ -17,3 +17,34 @@ button{
   cursor: pointer;
   text-align: center;
 }
+
+.fake-checkbox {
+  width: 22px;
+  height: 22px;
+  display: inline-block;
+  border: 0 none;
+  outline: none;
+  position: relative;
+  input {
+    display: none;
+  }
+  &__check {
+    position: absolute;
+    width: inherit;
+    height: inherit;
+    cursor: pointer;
+    left: 0;
+    top: 0;
+    border: 1px solid #c3c3c3;
+    border-radius: 3px;
+  }
+}
+.fake-checkbox input:checked + .fake-checkbox__check,
+.fake-checkbox--checked .fake-checkbox__check {
+  background-image: url("data:image/svg+xml,%3Csvg width='22' height='22' viewBox='0 0 22 22' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='0.5' y='0.5' width='21' height='21' rx='2.5' fill='%23FFE783' stroke='%23C3C3C3'/%3E%3Cpath d='M6 8L11 15L17 5' stroke='black' stroke-width='2'/%3E%3C/svg%3E%0A");
+}
+.fake-checkbox input:disabled + .fake-checkbox__check,
+.fake-checkbox--disabled .fake-checkbox__check {
+  opacity: 0.8;
+  pointer-events: none;
+}

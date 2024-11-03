@@ -7,6 +7,7 @@ import { TestCheckboxComponent } from '../../shared/test-checkbox/test-checkbox.
 import { TestInputComponent } from '../../shared/test-input/test-input.component';
 import { TestNumberComponent } from '../../shared/test-number/test-number.component';
 import { TestSelectComponent } from '../../shared/test-select/test-select.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
   {
@@ -22,6 +23,7 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
+    ReactiveFormsModule,
     TestCheckboxComponent,
     TestInputComponent,
     TestNumberComponent,

@@ -3,9 +3,14 @@
   border: 1px solid #c3c3c3;
   border-radius: 3px;
   background-color: transparent;
-  transition: all .3s;
+  transition: all 0.2s;
+
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 14px;
+  line-height: 22px;
+
   cursor: pointer;
-  &:hover{
+  &:hover {
     background-color: #dadada;
   }
 }

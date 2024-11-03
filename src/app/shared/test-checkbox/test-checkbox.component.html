@@ -1,1 +1,14 @@
-<p>test-checkbox works!</p>
+<ng-container *ngIf="item">
+  <div class="field">
+    <div
+      class="fake-checkbox"
+      [ngClass]="{
+        'fake-checkbox--checked': isChecked(),
+        'fake-checkbox--disabled': disabled()
+      }"
+    >
+      <span class="fake-checkbox__check"></span>
+    </div>
+    <label [for]="item.name">{{ item.name }}</label>
+  </div>
+</ng-container>

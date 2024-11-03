@@ -1,0 +1,23 @@
+:host {
+  position: relative;
+  width: 100%;
+  input {
+    display: flex;
+    align-items: center;
+
+    padding: 0px 12px;
+    height: 44px;
+
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-size: 17px;
+    line-height: 22px;
+
+    border: 1px solid #c3c3c3;
+    &:hover {
+      border: 1px solid #aaaaaa;
+    }
+    &::-webkit-input-placeholder {
+      font-family: Roboto, "Helvetica Neue", sans-serif;
+    }
+  }
+}

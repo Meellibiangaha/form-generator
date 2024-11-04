@@ -29,7 +29,7 @@ export class TestCheckboxComponent implements ControlValueAccessor {
   readonly disabled = signal<boolean>(false);
   readonly isChecked = signal<boolean>(false);
   readonly isDisabled = signal(false);
-  onChange: (value: boolean) => void = () => null;
+  onChange: (value: number) => void = () => null;
   onTouched: () => void = () => null;
 
   @HostListener('click')
@@ -37,22 +37,21 @@ export class TestCheckboxComponent implements ControlValueAccessor {
     if (!this.disabled()) {
       this.onTouched();
       this.isChecked.set(!this.isChecked());
-      this.onChange(this.isChecked());
-      this.change.emit(this.isChecked());
+      this.onChange(this.item.id);
+      this.change.emit(this.item.id);
     }
   }
 
   @Input({ required: true })
-  item?: CheckboxItem;
+  item: CheckboxItem;
 
   @Output()
-  // eslint-disable-next-line @angular-eslint/no-output-native
-  change: EventEmitter<boolean> = new EventEmitter<boolean>(false);
+  change: EventEmitter<number> = new EventEmitter<number>(null);
 
-  writeValue(value: boolean): void {
+  writeValue(value: number): void {
     this.onChange(value);
   }
-  registerOnChange(fn: (value: boolean) => void): void {
+  registerOnChange(fn: (value: number) => void): void {
     this.onChange = fn;
   }
   registerOnTouched(fn: () => void): void {

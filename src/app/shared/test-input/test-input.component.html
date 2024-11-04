@@ -1,2 +1,6 @@
-<input type="text" [placeholder]="placeholder" />
+<input
+  (input)="inputChangeHandler($event)"
+  type="text"
+  [placeholder]="placeholder ?? ''"
+/>
 <span class="input-summary">{{ summary }}</span>

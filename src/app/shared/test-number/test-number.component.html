@@ -1,1 +1,5 @@
-<input type="number" [placeholder]="placeholder" />
+<input
+  (input)="inputChangeHandler($event)"
+  type="number"
+  [placeholder]="placeholder ?? ''"
+/>

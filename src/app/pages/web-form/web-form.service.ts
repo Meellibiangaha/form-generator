@@ -18,7 +18,7 @@ export class WebFormService {
   }
 
   getFakeForm(): Observable<any> {
-    const result = null;
+    const result: null = null;
     return of(result);
   }
 }

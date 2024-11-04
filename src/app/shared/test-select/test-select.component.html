@@ -1,4 +1,8 @@
-<select>
+<select
+  [value]="value"
+  (change)="onSelectChangeHandler($event)"
+  [disabled]="isDisabled()"
+>
   <ng-container *ngFor="let option of options">
     <option [value]="option.id">{{ option.name }}</option>
   </ng-container>

@@ -1,4 +1,6 @@
 import { InputTypeEnum } from '../enums/input-type.enum';
+import { CheckboxItem } from './checkbox-item';
+import { SelectOption } from './select-option';
 
 export type JsonForm = {
   controls: JsonFormControls[];
@@ -9,12 +11,17 @@ export type JsonFormControls = {
   label: string;
   value: string;
   type: InputTypeEnum;
-  options?: JsonControlOptions;
   validators: JsonFormValidators;
+  descripton?: string,
+  options?: JsonControlOptions;
+  selectOptions?: SelectOption[];
+  checkboxItems?: CheckboxItem[];
 };
 export type JsonFormValidators = {
   required?: boolean;
   minLength?: number;
+  min?: number;
+  max?: number;
 };
 
 export type JsonControlOptions = {
@@ -22,4 +29,4 @@ export type JsonControlOptions = {
   max: string;
   step: string;
   icon: string;
-}
+};

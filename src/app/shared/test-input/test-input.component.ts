@@ -18,6 +18,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 })
 export class TestInputComponent implements ControlValueAccessor {
   readonly isDisabled = signal(false);
+  public value: string | null = null;
   onChange: (value: string) => void = () => null;
   onTouched: () => void = () => null;
 
@@ -26,6 +27,12 @@ export class TestInputComponent implements ControlValueAccessor {
 
   @Input()
   summary: string | null = null;
+
+  inputChangeHandler(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.value = input.value ? input.value : null;;
+    this.onChange(this.value);
+  }
 
   writeValue(value: string): void {
     this.onChange(value);

@@ -1,7 +1,9 @@
 :host {
   position: relative;
   width: 100%;
+  display: flex;
   select {
+    width: 100%;
     display: flex;
     align-items: center;
 
@@ -13,11 +15,34 @@
     line-height: 22px;
 
     border: 1px solid #c3c3c3;
+    cursor: pointer;
     &:hover {
       border: 1px solid #aaaaaa;
     }
     &::-webkit-input-placeholder {
       font-family: Roboto, "Helvetica Neue", sans-serif;
     }
+
+    option:hover {
+      cursor: pointer;
+      background-color: #ffe783;
+    }
+
+    option.active {
+      background-color: #ffda42;
+    }
+
+    option:hover::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 10px;
+      background: red;
+      border-right: 2px solid black;
+    }
   }
+
 }

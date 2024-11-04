@@ -18,16 +18,24 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 })
 export class TestNumberComponent implements ControlValueAccessor {
   readonly isDisabled = signal(false);
-  onChange: (value: string) => void = () => null;
+  public value: number = null;
+
+  onChange: (value: number) => void = () => null;
   onTouched: () => void = () => null;
 
   @Input()
-  placeholder: string | null = '';
+  placeholder: string = null;
 
-  writeValue(value: string): void {
-    this.onChange(value);
+  inputChangeHandler(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.value = input.value ? +input.value : null;;
+    this.onChange(this.value);
   }
-  registerOnChange(fn: (value: string) => void): void {
+
+  writeValue(value: number): void {
+    this.value = value;
+  }
+  registerOnChange(fn: (value: number) => void): void {
     this.onChange = fn;
   }
   registerOnTouched(fn: () => void): void {

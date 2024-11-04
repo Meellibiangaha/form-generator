@@ -19,19 +19,24 @@ import { SelectOption } from '../../core/models/select-option';
 })
 export class TestSelectComponent implements ControlValueAccessor {
   readonly isDisabled = signal(false);
-  onChange: (value: string) => void = () => null;
+  public value: number = null;
+
+  onChange: (value: number) => void = () => null;
   onTouched: () => void = () => null;
 
-  @Input()
+  @Input({ required: true })
   options: SelectOption[] = [];
 
-  @Input()
-  placeholder: string | null = null;
-
-  writeValue(value: string): void {
-    this.onChange(value);
+  onSelectChangeHandler(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+    this.value = +selectElement.value;
+    this.onChange(this.value);
   }
-  registerOnChange(fn: (value: string) => void): void {
+
+  writeValue(value: SelectOption): void {
+    this.value = value.id;
+  }
+  registerOnChange(fn: (value: number) => void): void {
     this.onChange = fn;
   }
   registerOnTouched(fn: () => void): void {

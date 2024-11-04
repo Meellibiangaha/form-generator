@@ -3,4 +3,6 @@ export type SelectOption = {
   id: number;
   /** Название  option */
   name: string;
-}
+  /** Выбранный option */
+  active?: boolean;
+};

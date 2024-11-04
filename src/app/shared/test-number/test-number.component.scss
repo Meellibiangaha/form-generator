@@ -1,7 +1,9 @@
 :host {
   position: relative;
   width: 100%;
+  display: flex;
   input {
+    width: 100%;
     display: flex;
     align-items: center;
 

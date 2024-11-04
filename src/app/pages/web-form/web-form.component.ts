@@ -9,10 +9,8 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { WebFormService } from './web-form.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { SelectOption } from '../../core/models/select-option';
-import { CheckboxItem } from '../../core/models/checkbox-item';
 import { JsonForm } from '../../core/models/json-form';
 import { InputTypeEnum } from '../../core/enums/input-type.enum';
 
@@ -32,74 +30,48 @@ export class WebFormComponent implements OnInit {
 
   public IT = InputTypeEnum;
   public formGroup: FormGroup = this.fb.group({});
-  public webFormData?: JsonForm ;
+  readonly webFormData = signal<JsonForm>(null);
 
-  public selectOptions = signal<SelectOption[]>([
-    { id: 1, name: 'value1' },
-    { id: 2, name: 'value2' },
-  ]);
-  public checkboxItems = signal<CheckboxItem[]>([
-    {
-      id: 1,
-      name: 'Общение',
-      checked: true,
-    },
-    {
-      id: 2,
-      name: 'Иностранные языки',
-    },
-    {
-      id: 3,
-      name: 'Бег с препятствиями',
-    },
-    {
-      id: 1,
-      name: 'Общение',
-      checked: true,
-    },
-    {
-      id: 2,
-      name: 'Иностранные языки',
-    },
-    {
-      id: 3,
-      name: 'Бег с препятствиями',
-    },
-    {
-      id: 1,
-      name: 'Общение',
-      checked: true,
-    },
-    {
-      id: 2,
-      name: 'Иностранные языки',
-    },
-    {
-      id: 3,
-      name: 'Бег с препятствиями',
-    },
-  ]);
+  get skilsArray(): FormArray | null {
+    return this.formGroup.get('skils') as FormArray;
+  }
+
+  public submit(): void {
+    console.log(this.formGroup.value);
+  }
+
+
+
   generateForm(webForm: JsonForm): void {
-    this.webFormData = webForm;
+    console.log(webForm);
+    this.webFormData.set(webForm);
+
     for (const control of webForm.controls) {
-      const validators = [];
-      for (const [key, value] of Object.entries(control.validators)) {
-        switch (key) {
-          case 'min':
-            validators.push(Validators.min(+value));
+      if (control.type === this.IT.InputCheckbox) {
+        // Создаем FormArray только при наличии чекбоксов
+        const formArray = this.fb.array(
+          control.checkboxItems.map(() => this.fb.control(null))
+        );
+        this.formGroup.addControl(control.name, formArray);
+      } else {
+        const validators = [];
+        for (const [key, value] of Object.entries(control.validators)) {
+          if (key === 'min') validators.push(Validators.min(+value));
         }
+        this.formGroup.addControl(
+          control.name,
+          this.fb.control(control.value, validators)
+        );
       }
-      this.formGroup.addControl(
-        control.name,
-        this.fb.control(control.value, validators)
-      );
     }
+  }
+  public setUp(response: JsonForm): void {
+    this.generateForm(response);
   }
 
   ngOnInit(): void {
-    console.log(this.activatedRoute.data);
     this.activatedRoute.data
       .pipe(untilDestroyed(this))
-      .subscribe(({ webForm }) => this.generateForm(webForm));
+      .subscribe(({ webForm }) => this.setUp(webForm));
   }
 }

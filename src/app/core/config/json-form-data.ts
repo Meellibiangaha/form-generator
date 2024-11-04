@@ -7,7 +7,7 @@ export class JsonFormDataConfig {
       {
         name: 'name',
         label: 'Имя',
-        value: '',
+        value: null,
         type: InputTypeEnum.InputText,
         validators: {
           required: true,
@@ -17,7 +17,7 @@ export class JsonFormDataConfig {
       {
         name: 'age',
         label: 'Возраст',
-        value: '',
+        value: null,
         type: InputTypeEnum.InputNumber,
         validators: {
           required: true,
@@ -27,7 +27,7 @@ export class JsonFormDataConfig {
       {
         name: 'maritalStatus',
         label: 'Семейное положение',
-        value: '',
+        value: null,
         type: InputTypeEnum.InputSelect,
         validators: {
           required: true,
@@ -47,18 +47,17 @@ export class JsonFormDataConfig {
       {
         name: 'university',
         label: 'ВУЗ',
-        value: '',
+        value: null,
         descripton: 'Укажите заведения, в которых вы учились.',
         type: InputTypeEnum.InputText,
         validators: {
-          required: true,
           minLength: 2,
         },
       },
       {
         name: 'skils',
         label: 'Навыки',
-        value: '',
+        value: null,
         type: InputTypeEnum.InputCheckbox,
         validators: {
           required: false,

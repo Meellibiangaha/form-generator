@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, forwardRef, Input, signal } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-test-number',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './test-number.component.html',
   styleUrl: './test-number.component.scss',
   providers: [
@@ -18,17 +18,19 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 })
 export class TestNumberComponent implements ControlValueAccessor {
   readonly isDisabled = signal(false);
-  public value: number = null;
 
   onChange: (value: number) => void = () => null;
   onTouched: () => void = () => null;
+
+  @Input()
+  value: number = null;
 
   @Input()
   placeholder: string = null;
 
   inputChangeHandler(event: Event): void {
     const input = event.target as HTMLInputElement;
-    this.value = input.value ? +input.value : null;;
+    this.value = input.value ? +input.value : null;
     this.onChange(this.value);
   }
 

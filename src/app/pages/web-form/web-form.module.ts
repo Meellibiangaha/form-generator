@@ -8,6 +8,7 @@ import { TestInputComponent } from '../../shared/test-input/test-input.component
 import { TestNumberComponent } from '../../shared/test-number/test-number.component';
 import { TestSelectComponent } from '../../shared/test-select/test-select.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ControlErrorComponent } from '../../shared/control-error/control-error.component';
 
 const routes: Routes = [
   {
@@ -28,6 +29,7 @@ const routes: Routes = [
     TestInputComponent,
     TestNumberComponent,
     TestSelectComponent,
+    ControlErrorComponent,
   ],
 })
 export class WebFormModule {}

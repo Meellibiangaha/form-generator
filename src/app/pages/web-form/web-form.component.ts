@@ -13,6 +13,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { JsonForm } from '../../core/models/json-form';
 import { InputTypeEnum } from '../../core/enums/input-type.enum';
+import { BaseValidationEnum } from '../../core/enums/base-validation.enum';
 
 @UntilDestroy()
 @Component({
@@ -29,6 +30,7 @@ export class WebFormComponent implements OnInit {
   ) {}
 
   public IT = InputTypeEnum;
+  public BVE = BaseValidationEnum;
   public formGroup: FormGroup = this.fb.group({});
   readonly webFormData = signal<JsonForm>(null);
 
@@ -37,18 +39,20 @@ export class WebFormComponent implements OnInit {
   }
 
   public submit(): void {
+    if (this.formGroup.valid) {
+    } else {
+      this.formGroup.markAllAsTouched();
+      this.formGroup.updateValueAndValidity();
+    }
+    console.log('valid: ', this.formGroup.valid);
     console.log(this.formGroup.value);
   }
 
-
-
   generateForm(webForm: JsonForm): void {
-    console.log(webForm);
     this.webFormData.set(webForm);
 
     for (const control of webForm.controls) {
       if (control.type === this.IT.InputCheckbox) {
-        // Создаем FormArray только при наличии чекбоксов
         const formArray = this.fb.array(
           control.checkboxItems.map(() => this.fb.control(null))
         );
@@ -56,7 +60,35 @@ export class WebFormComponent implements OnInit {
       } else {
         const validators = [];
         for (const [key, value] of Object.entries(control.validators)) {
-          if (key === 'min') validators.push(Validators.min(+value));
+          switch (key) {
+            case this.BVE.Min:
+              validators.push(Validators.min(+value));
+              break;
+            case this.BVE.Max:
+              validators.push(Validators.max(+value));
+              break;
+            case this.BVE.Required:
+              if (value) {
+                validators.push(Validators.required);
+              }
+              break;
+            case this.BVE.MinLength:
+              validators.push(Validators.minLength(+value));
+              break;
+            case this.BVE.Maxlength:
+              validators.push(Validators.maxLength(+value));
+              break;
+              // case 'pattern':
+              //   validators.push(Validators.pattern(value));
+              //   break;
+              // case 'nullValidator':
+              //   if (value) {
+              //     validators.push(Validators.nullValidator);
+              //   }
+              break;
+            default:
+              break;
+          }
         }
         this.formGroup.addControl(
           control.name,

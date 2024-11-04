@@ -1,9 +1,12 @@
 <select
-  [value]="value"
+  [(ngModel)]="value"
   (change)="onSelectChangeHandler($event)"
   [disabled]="isDisabled()"
 >
+
   <ng-container *ngFor="let option of options">
-    <option [value]="option.id">{{ option.name }}</option>
+    <option *ngIf="option.id !== value" [value]="option.id">
+      {{ option.name }}
+    </option>
   </ng-container>
 </select>

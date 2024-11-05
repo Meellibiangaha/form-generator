@@ -7,12 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [
-    CommonModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-  ],
+  imports: [CommonModule, AppRoutingModule, BrowserAnimationsModule, HttpClientModule],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

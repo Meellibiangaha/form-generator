@@ -53,6 +53,10 @@ export class JsonFormDataConfig {
         validators: {
           minLength: 2,
         },
+        inputTextItems: [null],
+        modifier: {
+          canAddControl: true,
+        },
       },
       {
         name: 'skils',

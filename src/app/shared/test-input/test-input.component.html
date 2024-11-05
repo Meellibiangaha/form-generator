@@ -1,7 +1,12 @@
-<input
-  [(ngModel)]="value"
-  (input)="inputChangeHandler($event)"
-  type="text"
-  [placeholder]="placeholder ?? ''"
-/>
+<div class="wrapper">
+  <input [(ngModel)]="value" (input)="inputChangeHandler($event)" type="text" [placeholder]="placeholder ?? ''" />
+  <div class="removeControl" *ngIf="canRemoveControl" (click)="removeInputHandler()">
+    <i class="removeControl-btn"></i>
+  </div>
+  <div class="addControl" [class.withRemoveBtn]="canRemoveControl" *ngIf="canAddControl" (click)="addInputHandler()">
+    <i class="addControl-btn"></i>
+    <span>Добавить ещё</span>
+  </div>
+</div>
+
 <span class="input-summary">{{ summary }}</span>

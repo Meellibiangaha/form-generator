@@ -7,43 +7,52 @@
     <div class="form-line">
       <label class="form-label"
         >{{ control.label }}
-        <span class="form-label--required" *ngIf="control.validators.required"
-          >*</span
-        >
+        <span class="form-label--required" *ngIf="control.validators.required">*</span>
       </label>
       <!-- InputCheckbox -->
       <div class="form-field" [ngSwitch]="control.type">
-        <div
-          *ngSwitchCase="IT.InputCheckbox"
-          class="checkbox-wrapper"
-          [formArrayName]="control.name"
-        >
-          <ng-container
-            *ngFor="let item of control.checkboxItems; let i = index"
-          >
+        <div *ngSwitchCase="IT.InputCheckbox" class="checkbox-wrapper" [formArrayName]="control.name">
+          <ng-container *ngFor="let item of control.checkboxItems; let i = index">
             <app-test-checkbox [formControlName]="i" [item]="item" />
           </ng-container>
         </div>
         <!-- InputText -->
-        <app-test-input
-          *ngSwitchCase="IT.InputText"
-          [formControlName]="control.name"
-          [value]="!!control.value ? control.value.toString() : null"
-          [placeholder]="'Например, ВолгГУ'"
-          [summary]="control.descripton"
-        />
+        <div *ngSwitchCase="IT.InputText">
+          <div
+            class="form-field-flex flex--column"
+            *ngIf="control?.modifier?.canAddControl"
+            [formArrayName]="control.name">
+            <ng-container *ngFor="let item of control.inputTextItems; let i = index">
+              <app-test-input
+                [formControlName]="i"
+                [value]="!!item ? item.toString() : null"
+                [placeholder]="'Например, ВолгГУ'"
+                [summary]="control.descripton"
+                [canRemoveControl]="control?.modifier?.canAddControl && i === control.inputTextItems.length - 1 && !!i"
+                [canAddControl]="control?.modifier?.canAddControl && i === control.inputTextItems.length - 1"
+                (removeInput)="removeInputControl(control.name, i)"
+                (addInput)="addInputControl(control.name)" />
+            </ng-container>
+          </div>
+          <div class="form-field-flex" *ngIf="!control?.modifier?.canAddControl">
+            <app-test-input
+              [formControlName]="control.name"
+              [value]="!!control.value ? control.value.toString() : null"
+              [placeholder]="'Например, ВолгГУ'"
+              [summary]="control.descripton" />
+          </div>
+        </div>
+
         <!-- InputNumber -->
         <app-test-number
           *ngSwitchCase="IT.InputNumber"
           [formControlName]="control.name"
-          [value]="!!control.value ? +control.value : null"
-        />
+          [value]="!!control.value ? +control.value : null" />
         <!-- InputSelect -->
         <app-test-select
           *ngSwitchCase="IT.InputSelect"
           [formControlName]="control.name"
-          [options]="control.selectOptions"
-        />
+          [options]="control.selectOptions" />
       </div>
     </div>
   </ng-container>
@@ -52,7 +61,6 @@
     <app-control-error
       class=""
       *ngIf="formGroup.invalid && formGroup.dirty && formGroup.touched"
-      [message]="'Форма не валидна'"
-    />
+      [message]="'Форма не валидна'" />
   </div>
 </div>

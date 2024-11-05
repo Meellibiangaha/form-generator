@@ -13,9 +13,10 @@ export type JsonFormControls = {
   type: InputTypeEnum;
   validators: JsonFormValidators;
   descripton?: string,
-  options?: JsonControlOptions;
+  modifier?: JsonControlModifier;
   selectOptions?: SelectOption[];
   checkboxItems?: CheckboxItem[];
+  inputTextItems?: string[]
 };
 export type JsonFormValidators = {
   required?: boolean;
@@ -24,9 +25,7 @@ export type JsonFormValidators = {
   max?: number;
 };
 
-export type JsonControlOptions = {
-  min: string;
-  max: string;
-  step: string;
-  icon: string;
+export type JsonControlModifier = {
+  active?: boolean;
+  canAddControl?: boolean;
 };

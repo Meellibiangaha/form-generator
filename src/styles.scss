@@ -4,15 +4,15 @@
 html,
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
   font-style: normal;
   color: #000000;
   height: 100%;
 }
-body{
+body {
   padding: 85px 135px;
 }
-button{
+button {
   border-radius: 3px;
   cursor: pointer;
   text-align: center;
@@ -47,4 +47,42 @@ button{
 .fake-checkbox--disabled .fake-checkbox__check {
   opacity: 0.8;
   pointer-events: none;
+}
+
+.addControl {
+  width: 100%;
+  position: absolute;
+  top: 10px;
+  left: calc(100% + 12px);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  &.withRemoveBtn {
+    left: calc(100% + 48px);
+  }
+  &-btn {
+    display: block;
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    background-image: url("data:image/svg+xml,%3Csvg width='26' height='26' viewBox='0 0 26 26' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='13' cy='13' r='12.5' fill='white' stroke='black'/%3E%3Cpath d='M6 13H20' stroke='black'/%3E%3Cpath d='M13 6L13 20' stroke='black'/%3E%3C/svg%3E%0A");
+    cursor: pointer;
+  }
+}
+.removeControl {
+  width: 28px;
+  height: 28px;
+  width: 100%;
+  position: absolute;
+  top: 10px;
+  left: calc(100% + 12px);
+  display: block;
+  &-btn {
+    display: block;
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    background-image: url("data:image/svg+xml,%3Csvg width='26' height='26' viewBox='0 0 26 26' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='13' cy='13' r='13' fill='%23FC6363'/%3E%3Cpath d='M8.05029 17.9498L17.9498 8.05027' stroke='white'/%3E%3Cpath d='M8.05029 8.05023L17.9498 17.9497' stroke='white'/%3E%3C/svg%3E%0A");
+    cursor: pointer;
+  }
 }

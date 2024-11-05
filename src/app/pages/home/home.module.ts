@@ -8,10 +8,7 @@ const routes: Routes = [
   { path: '', component: HomeComponent, title: 'Главная' },
   {
     path: 'web-form',
-    loadChildren: () =>
-      import('../web-form/web-form.module').then(
-        (m) => m.WebFormModule
-      ),
+    loadChildren: () => import('../web-form/web-form.module').then((m) => m.WebFormModule),
   },
 ];
 

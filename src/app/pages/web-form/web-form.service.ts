@@ -13,7 +13,7 @@ export class WebFormService {
       catchError((reason) => {
         console.error(reason);
         return throwError(() => reason);
-      })
+      }),
     );
   }
 

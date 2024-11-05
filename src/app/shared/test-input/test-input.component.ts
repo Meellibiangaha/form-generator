@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, forwardRef, Input, signal } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, Output, signal } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -22,6 +22,12 @@ export class TestInputComponent implements ControlValueAccessor {
   onChange: (value: string) => void = () => null;
   onTouched: () => void = () => null;
 
+  @Output()
+  removeInput: EventEmitter<boolean> = new EventEmitter<boolean>(false);
+
+  @Output()
+  addInput: EventEmitter<boolean> = new EventEmitter<boolean>(false);
+
   @Input() value: string = null;
 
   @Input()
@@ -30,10 +36,24 @@ export class TestInputComponent implements ControlValueAccessor {
   @Input()
   summary: string = null;
 
+  @Input()
+  canRemoveControl = false;
+
+  @Input()
+  canAddControl = false;
+
   inputChangeHandler(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.value = input.value ? input.value : null;
     this.onChange(this.value);
+  }
+
+  removeInputHandler(): void {
+    this.removeInput.emit(true);
+  }
+
+  addInputHandler(): void {
+    this.addInput.emit(true);
   }
 
   writeValue(value: string): void {

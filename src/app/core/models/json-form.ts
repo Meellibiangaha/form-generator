@@ -9,14 +9,15 @@ export type JsonForm = {
 export type JsonFormControls = {
   name: string;
   label: string;
-  value: string | number;
   type: InputTypeEnum;
   validators: JsonFormValidators;
-  descripton?: string,
+  value?: string | number;
+  descripton?: string;
+  placeholder?: string;
   modifier?: JsonControlModifier;
   selectOptions?: SelectOption[];
   checkboxItems?: CheckboxItem[];
-  inputTextItems?: string[]
+  inputTextItems?: string[];
 };
 export type JsonFormValidators = {
   required?: boolean;

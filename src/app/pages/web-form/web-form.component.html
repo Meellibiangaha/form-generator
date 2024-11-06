@@ -25,8 +25,8 @@
             <ng-container *ngFor="let item of control.inputTextItems; let i = index">
               <app-test-input
                 [formControlName]="i"
-                [value]="!!item ? item.toString() : null"
-                [placeholder]="'Например, ВолгГУ'"
+                [value]="item"
+                [placeholder]="control?.placeholder"
                 [summary]="control.descripton"
                 [canRemoveControl]="control?.modifier?.canAddControl && i === control.inputTextItems.length - 1 && !!i"
                 [canAddControl]="control?.modifier?.canAddControl && i === control.inputTextItems.length - 1"
@@ -38,7 +38,7 @@
             <app-test-input
               [formControlName]="control.name"
               [value]="!!control.value ? control.value.toString() : null"
-              [placeholder]="'Например, ВолгГУ'"
+              [placeholder]="control?.placeholder"
               [summary]="control.descripton" />
           </div>
         </div>
@@ -47,6 +47,7 @@
         <app-test-number
           *ngSwitchCase="IT.InputNumber"
           [formControlName]="control.name"
+          [placeholder]="control?.placeholder"
           [value]="!!control.value ? +control.value : null" />
         <!-- InputSelect -->
         <app-test-select
@@ -57,9 +58,8 @@
     </div>
   </ng-container>
   <div class="submit">
-    <button class="submit-btn" (click)="submit()">Отправить</button>
+    <button  class="submit-btn" (click)="submit()">Отправить</button>
     <app-control-error
-      class=""
       *ngIf="formGroup.invalid && formGroup.dirty && formGroup.touched"
       [message]="'Форма не валидна'" />
   </div>

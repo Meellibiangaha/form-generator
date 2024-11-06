@@ -1,5 +1,5 @@
 <div class="wrapper">
-  <input [(ngModel)]="value" (input)="inputChangeHandler($event)" type="text" [placeholder]="placeholder ?? ''" />
+  <input #input [(ngModel)]="value" (input)="inputChangeHandler($event)" type="text" [placeholder]="placeholder ?? ''" />
   <div class="removeControl" *ngIf="canRemoveControl" (click)="removeInputHandler()">
     <i class="removeControl-btn"></i>
   </div>

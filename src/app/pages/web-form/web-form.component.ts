@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, Input, OnInit, Signal, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { WebFormService } from './web-form.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -10,6 +10,7 @@ import { WebFormGenerateFormService } from './web-form-generate-form.service';
 
 type updateWebFormDataOption = {
   isAdd: boolean;
+  controlName: string;
   value?: string | null;
   index?: number;
 };
@@ -27,6 +28,7 @@ export class WebFormComponent implements OnInit {
     private wfGenerateFormSevice: WebFormGenerateFormService,
     private activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
+    private router: Router,
   ) {}
 
   public IT = InputTypeEnum;
@@ -35,58 +37,71 @@ export class WebFormComponent implements OnInit {
   readonly webFormData = signal<JsonForm>(null);
 
   public submit(): void {
+    console.log(this.formGroup.value);
+    console.log(this.webFormData());
     if (this.formGroup.valid) {
+      this.wformService
+        .createForm(this.wformService.mapFilterToRequest(this.formGroup.getRawValue()))
+        .pipe(untilDestroyed(this))
+        .subscribe({
+          next: () => {
+            this.router.navigateByUrl('home');
+          },
+          error: () => {
+            // Какой-то алёрт выводим
+          },
+        });
     } else {
       this.formGroup.markAllAsTouched();
       this.formGroup.updateValueAndValidity();
     }
-    console.log('valid: ', this.formGroup.valid);
-    console.log(this.formGroup.value);
   }
 
   private updateWebFormData(option: updateWebFormDataOption): void {
-    if (option.isAdd) {
-      this.webFormData.update((form) => {
-        const newForm = {
-          ...form,
-          controls: form.controls.map((c) => ({
+    this.webFormData.update((form) => ({
+      ...form,
+      controls: form.controls.map((c) => {
+        if (c.name === option.controlName) {
+          return {
             ...c,
-            inputTextItems:
-              option.value === null || option.value
-                ? [...(c.inputTextItems || []), option.value]
-                : c.inputTextItems || [],
-          })),
-        };
-        return newForm;
-      });
-    } else {
-      this.webFormData.update((form) => {
-        const newForm = {
-          ...form,
-          controls: form.controls.map((c) => ({
-            ...c,
-            inputTextItems: c.inputTextItems.filter((_, i) => i !== option.index)
-          })),
-        };
-        return newForm;
-      });
-    }
+            // Если добавляем, вставляем inputTextItems только в нужное место
+            inputTextItems: option.isAdd
+              ? [...(c.inputTextItems ?? []), option.value]
+              : c.inputTextItems.filter((_, i) => i !== option.index),
+          };
+        }
+        return c; // Остальные контролы возвращаем без изменений
+      }),
+    }));
+    this.updateWebFormDataValue();
   }
 
-  addInputControl(arrayName: string): void {
-    const controlArray = this.formGroup.get(arrayName) as FormArray;
+  private updateWebFormDataValue(): void {
+    this.webFormData.update((form) => ({
+      ...form,
+      controls: form.controls.map((c) => ({
+        ...c,
+        value: this.formGroup.get(c.name)?.value ?? c.value,
+      })),
+    }));
+  }
+
+  addInputControl(controlName: string): void {
+    const controlArray = this.formGroup.get(controlName) as FormArray;
     controlArray.push(this.fb.control(null));
     const addControlOption = {
       isAdd: true,
+      controlName: controlName,
       value: null,
     } as updateWebFormDataOption;
     this.updateWebFormData(addControlOption);
   }
 
-  removeInputControl(arrayName: string, index: number): void {
-    const controlArray = this.formGroup.get(arrayName) as FormArray;
+  removeInputControl(controlName: string, index: number): void {
+    const controlArray = this.formGroup.get(controlName) as FormArray;
     const removeControlOption = {
       isAdd: false,
+      controlName: controlName,
       index: index,
     };
     if (controlArray.length > 1) {
@@ -99,11 +114,7 @@ export class WebFormComponent implements OnInit {
     for (const control of webForm.controls) {
       switch (control.type) {
         case InputTypeEnum.InputCheckbox:
-          const formArray = this.fb.array(
-            control.checkboxItems.map(() =>
-              this.fb.control(null, this.wfGenerateFormSevice.createValidation(control.validators)),
-            ),
-          );
+          const formArray = this.wfGenerateFormSevice.createFormArray(control, control.validators);
           this.formGroup.addControl(control.name, formArray);
           break;
         case InputTypeEnum.InputText:

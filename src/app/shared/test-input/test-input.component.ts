@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, forwardRef, Input, Output, signal } from '@angular/core';
+import { Component, ElementRef, EventEmitter, forwardRef, Input, Output, signal, ViewChild } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -21,6 +21,9 @@ export class TestInputComponent implements ControlValueAccessor {
 
   onChange: (value: string) => void = () => null;
   onTouched: () => void = () => null;
+
+  @ViewChild('input', { static: true })
+  input: ElementRef<HTMLInputElement>;
 
   @Output()
   removeInput: EventEmitter<boolean> = new EventEmitter<boolean>(false);
@@ -45,6 +48,7 @@ export class TestInputComponent implements ControlValueAccessor {
   inputChangeHandler(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.value = input.value ? input.value : null;
+    this.input.nativeElement.value = this.value;
     this.onChange(this.value);
   }
 
@@ -57,6 +61,7 @@ export class TestInputComponent implements ControlValueAccessor {
   }
 
   writeValue(value: string): void {
+    this.input.nativeElement.value = value;
     this.onChange(value);
   }
   registerOnChange(fn: (value: string) => void): void {
@@ -69,3 +74,4 @@ export class TestInputComponent implements ControlValueAccessor {
     this.isDisabled.set(isDisabled);
   }
 }
+

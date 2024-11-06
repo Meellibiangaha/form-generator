@@ -17,6 +17,12 @@ const routes: Routes = [
     title: 'Анкета',
     resolve: { webForm: WebFormResolver },
   },
+  {
+    path: ':id',
+    component: WebFormComponent,
+    title: 'Редактировать Анкету',
+    resolve: { webForm: WebFormResolver },
+  },
 ];
 
 @NgModule({

@@ -4,5 +4,5 @@ export type CheckboxItem = {
   /** Названия поля с чекбоксом */
   name: string;
   /** Нажат ли чекбоск */
-  checked?: boolean;
+  checked: boolean;
 }

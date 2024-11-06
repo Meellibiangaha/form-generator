@@ -1,16 +1,7 @@
 import { Injectable } from '@angular/core';
-import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, ValidatorFn, Validators } from '@angular/forms';
 import { BaseValidationEnum } from '../../core/enums/base-validation.enum';
-import {
-  JsonFormControls,
-  JsonFormValidators,
-} from '../../core/models/json-form';
+import { JsonFormControls, JsonFormValidators } from '../../core/models/json-form';
 import { InputTypeEnum } from '../../core/enums/input-type.enum';
 
 @Injectable({
@@ -19,27 +10,21 @@ import { InputTypeEnum } from '../../core/enums/input-type.enum';
 export class WebFormGenerateFormService {
   constructor(private fb: FormBuilder) {}
 
-  createFormArray(
-    control: JsonFormControls,
-    controlValidators: JsonFormValidators
-  ): FormArray<FormControl<any>> {
+  createFormArray(control: JsonFormControls, controlValidators: JsonFormValidators): FormArray<FormControl<any>> {
     switch (control.type) {
       case InputTypeEnum.InputCheckbox:
         return this.fb.array(
-          control.checkboxItems.map(() =>
-            this.fb.control(
-              control.value,
-              this.createValidation(controlValidators)
-            )
-          )
+          control.checkboxItems.map((item) =>
+            this.fb.control(item.checked ? item.id : null, this.createValidation(controlValidators)),
+          ),
         );
       case InputTypeEnum.InputText:
-        return this.fb.array([
-          this.fb.control(
-            control.value,
-            this.createValidation(controlValidators)
-          ),
-        ]);
+        return this.fb.array(
+          control.inputTextItems
+            .join(' ')
+            .split(' ')
+            .map((item: string) => this.fb.control(item, this.createValidation(controlValidators))),
+        );
       default:
         return this.fb.array(null);
     }

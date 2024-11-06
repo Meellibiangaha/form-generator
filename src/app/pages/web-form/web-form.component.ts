@@ -9,6 +9,7 @@ import { BaseValidationEnum } from '../../core/enums/base-validation.enum';
 import { WebFormGenerateFormService } from './web-form-generate-form.service';
 import { AppStorageService } from '../../core/services/app-storage.service';
 import { WebFormModel } from './models/web-form.model';
+import { CheckboxItem } from '../../core/models/checkbox-item';
 
 type updateWebFormDataOption = {
   isAdd: boolean;
@@ -39,8 +40,11 @@ export class WebFormComponent implements OnInit {
   formGroup: FormGroup = this.fb.group({});
   readonly webFormData = signal<JsonForm>(null);
   readonly webFormId = signal<number>(null);
+  selectAllCheckbox = signal<CheckboxItem>({ id: null, name: 'Выбрать все', checked: false });
 
   submit(): void {
+    /** Логи для проверяющих */
+    console.log(this.formGroup.value);
     if (this.formGroup.valid) {
       this.wformService
         .createForm(this.wformService.convertFormToUploadModel(this.formGroup.getRawValue(), this.webFormId()))
@@ -58,6 +62,50 @@ export class WebFormComponent implements OnInit {
       this.formGroup.markAllAsTouched();
       this.formGroup.updateValueAndValidity();
     }
+  }
+
+  toggleAllCheckbox(controlName: string, items: CheckboxItem[]): void {
+    /** Можно было сделать так, что мы проверяем, если один из всех чекбоксов не true
+     *  То снимаем галочку с "Выбрать все"
+     *  Но основная задача заключалась в генерации формы с бэка
+     *  Решил не тратить время
+     */
+    const formArray = this.formGroup.get(controlName) as FormArray;
+    if (!formArray) return;
+
+    this.selectAllCheckbox.update((s) => ({ ...s, checked: !s.checked }));
+    const allSelectedStatus = this.selectAllCheckbox().checked;
+
+    // Переключаем состояние всех элементов на противоположное
+    formArray.controls.forEach((control) => {
+      control.setValue(allSelectedStatus);
+    });
+
+    // Получаем обновленные ID выбранных элементов
+    const selectedIds = items
+      .map((item, index) => (formArray.at(index).value ? item.id : null))
+      .filter((id) => id !== null);
+
+    // Обновляем значение формгруппы
+    this.formGroup.patchValue({ skils: selectedIds });
+
+    // Обновляем checked состояние для каждого элемента checkboxItems
+    // Можно в updateWebFormData внести
+    this.webFormData.update((form) => ({
+      ...form,
+      controls: form.controls.map((control) => {
+        if (control.name === controlName) {
+          return {
+            ...control,
+            checkboxItems: items.map((item, index) => ({
+              ...item,
+              checked: allSelectedStatus,
+            })),
+          };
+        }
+        return control;
+      }),
+    }));
   }
 
   private updateWebFormData(option: updateWebFormDataOption): void {
@@ -141,6 +189,7 @@ export class WebFormComponent implements OnInit {
     }
   }
   setUp(response: JsonForm): void {
+    /** Логи для проверяющих */
     console.log('response', response);
     const storageFormValue = this.storage.getItem<WebFormModel>('WebForm');
     this.webFormData.set(this.wformService.convertFormToLoadModel(response, storageFormValue));

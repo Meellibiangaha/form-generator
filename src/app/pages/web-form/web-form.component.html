@@ -15,6 +15,16 @@
           <ng-container *ngFor="let item of control.checkboxItems; let i = index">
             <app-test-checkbox [formControlName]="i" [item]="item" />
           </ng-container>
+          <div class="allToggle-btn" (click)="toggleAllCheckbox(control.name, control.checkboxItems)">
+            <div
+              class="fake-checkbox"
+              [ngClass]="{
+                'fake-checkbox--checked': selectAllCheckbox().checked,
+              }">
+              <span class="fake-checkbox__check"></span>
+            </div>
+            <label class="allToggle-label">Выбрать все</label>
+          </div>
         </div>
         <!-- InputText -->
         <div *ngSwitchCase="IT.InputText">
@@ -58,7 +68,7 @@
     </div>
   </ng-container>
   <div class="submit">
-    <button  class="submit-btn" (click)="submit()">Отправить</button>
+    <button class="submit-btn" (click)="submit()">Отправить</button>
     <app-control-error
       *ngIf="formGroup.invalid && formGroup.dirty && formGroup.touched"
       [message]="'Форма не валидна'" />

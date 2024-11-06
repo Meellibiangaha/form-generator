@@ -41,7 +41,7 @@ export class TestCheckboxComponent implements ControlValueAccessor {
     }
   }
 
-  @Input({ required: true })
+  @Input()
   item: CheckboxItem;
 
   @Output()

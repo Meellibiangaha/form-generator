@@ -88,10 +88,22 @@
   max-height: 200px;
 }
 
-.flex{
-  &--column{
+.flex {
+  &--column {
     display: flex;
     flex-direction: column;
     gap: 8px;
+  }
+}
+
+.allToggle{
+  &-btn {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+  }
+  &-label{
+    font-weight: bold;
   }
 }

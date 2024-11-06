@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, Input, OnInit, Signal, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, Input, OnInit, Signal, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WebFormService } from './web-form.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -7,6 +7,8 @@ import { JsonForm } from '../../core/models/json-form';
 import { InputTypeEnum } from '../../core/enums/input-type.enum';
 import { BaseValidationEnum } from '../../core/enums/base-validation.enum';
 import { WebFormGenerateFormService } from './web-form-generate-form.service';
+import { AppStorageService } from '../../core/services/app-storage.service';
+import { WebFormModel } from './models/web-form.model';
 
 type updateWebFormDataOption = {
   isAdd: boolean;
@@ -26,29 +28,30 @@ export class WebFormComponent implements OnInit {
   constructor(
     private wformService: WebFormService,
     private wfGenerateFormSevice: WebFormGenerateFormService,
+    private storage: AppStorageService,
     private activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
     private router: Router,
   ) {}
 
-  public IT = InputTypeEnum;
-  public BVE = BaseValidationEnum;
-  public formGroup: FormGroup = this.fb.group({});
+  IT = InputTypeEnum;
+  BVE = BaseValidationEnum;
+  formGroup: FormGroup = this.fb.group({});
   readonly webFormData = signal<JsonForm>(null);
+  readonly webFormId = signal<number>(null);
 
-  public submit(): void {
-    console.log(this.formGroup.value);
-    console.log(this.webFormData());
+  submit(): void {
     if (this.formGroup.valid) {
       this.wformService
-        .createForm(this.wformService.mapFilterToRequest(this.formGroup.getRawValue()))
+        .createForm(this.wformService.convertFormToUploadModel(this.formGroup.getRawValue(), this.webFormId()))
         .pipe(untilDestroyed(this))
         .subscribe({
           next: () => {
             this.router.navigateByUrl('home');
           },
-          error: () => {
+          error: (error) => {
             // Какой-то алёрт выводим
+            console.error(error);
           },
         });
     } else {
@@ -137,9 +140,12 @@ export class WebFormComponent implements OnInit {
       }
     }
   }
-  public setUp(response: JsonForm): void {
-    this.webFormData.set(response);
-    this.generateForm(response);
+  setUp(response: JsonForm): void {
+    console.log('response', response);
+    const storageFormValue = this.storage.getItem<WebFormModel>('WebForm');
+    this.webFormData.set(this.wformService.convertFormToLoadModel(response, storageFormValue));
+    this.webFormId.set(response.id);
+    this.generateForm(this.wformService.convertFormToLoadModel(response, storageFormValue));
   }
 
   ngOnInit(): void {

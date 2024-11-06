@@ -3,6 +3,7 @@ import { CheckboxItem } from './checkbox-item';
 import { SelectOption } from './select-option';
 
 export type JsonForm = {
+  id: number | null;
   controls: JsonFormControls[];
 };
 

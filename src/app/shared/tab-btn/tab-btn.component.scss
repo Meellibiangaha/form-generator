@@ -10,7 +10,7 @@
   line-height: 22px;
 
   cursor: pointer;
-  &:hover {
+  &:hover:not(:disabled) {
     background-color: #dadada;
   }
 }

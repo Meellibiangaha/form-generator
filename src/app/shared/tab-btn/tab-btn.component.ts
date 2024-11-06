@@ -11,4 +11,7 @@ import { Component, Input } from '@angular/core';
 export class TabBtnComponent {
   @Input({ required: true })
   btnText: string = '';
+
+  @Input()
+  disabled = false;
 }

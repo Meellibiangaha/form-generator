@@ -191,9 +191,9 @@ export class WebFormComponent implements OnInit {
   setUp(response: JsonForm): void {
     /** Логи для проверяющих */
     console.log('response', response);
-    const storageFormValue = this.storage.getItem<WebFormModel>('WebForm');
+    const storageFormValue = this.storage.getItem<WebFormModel>('WebForm') || null;
     this.webFormData.set(this.wformService.convertFormToLoadModel(response, storageFormValue));
-    this.webFormId.set(response.id);
+    this.webFormId.set(response.id || null);
     this.generateForm(this.wformService.convertFormToLoadModel(response, storageFormValue));
   }
 

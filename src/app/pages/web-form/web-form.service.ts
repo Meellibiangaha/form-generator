@@ -45,7 +45,7 @@ export class WebFormService {
   }
 
   convertFormToLoadModel(form: JsonForm, formValue: Partial<WebFormModel>): JsonForm {
-    if (form.id === formValue.id) {
+    if (formValue || form?.id === formValue?.id) {
       const updatedControls = form.controls.map((control) => {
         const updatedControl = { ...control };
 

@@ -2,7 +2,7 @@
   <div class="wrapper-flex">
     <app-tab-btn [btnText]="'Анкета'" [routerLink]="'web-form'" />
     <app-tab-btn [btnText]="'Редактировать анкету (эмулирую ответ сервера)'" [routerLink]="['web-form', '1']" />
-    <app-tab-btn [disabled]="canEditStorageForm" [btnText]="'Редактировать анкету (LocalStorage)'" [routerLink]="['web-form', '2']" />
+    <app-tab-btn [disabled]="canEditStorageForm()" [btnText]="'Редактировать анкету (LocalStorage)'" [routerLink]="['web-form', '2']" />
   </div>
 </div>
 <div class="main">

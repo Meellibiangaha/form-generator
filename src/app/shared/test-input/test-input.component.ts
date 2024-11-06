@@ -48,7 +48,6 @@ export class TestInputComponent implements ControlValueAccessor {
   inputChangeHandler(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.value = input.value ? input.value : null;
-    this.input.nativeElement.value = this.value;
     this.onChange(this.value);
   }
 
@@ -61,8 +60,10 @@ export class TestInputComponent implements ControlValueAccessor {
   }
 
   writeValue(value: string): void {
-    this.input.nativeElement.value = value;
-    this.onChange(value);
+    this.value = value;
+    if (this.input) {
+      this.input.nativeElement.value = value;
+    }
   }
   registerOnChange(fn: (value: string) => void): void {
     this.onChange = fn;
@@ -74,4 +75,3 @@ export class TestInputComponent implements ControlValueAccessor {
     this.isDisabled.set(isDisabled);
   }
 }
-

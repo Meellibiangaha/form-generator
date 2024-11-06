@@ -2,6 +2,13 @@ import { JitCompilerFactory } from '@angular/platform-browser-dynamic';
 import { InputTypeEnum } from '../enums/input-type.enum';
 import { JsonForm } from '../models/json-form';
 
+
+/**
+ * Готовые Json'ы для:
+ * 1. Создания
+ * 2. Эмулирования ответа сервера (в редактирвоание зашли)
+ * 3. Редактирование созданного
+ */
 export class JsonFormDataConfig {
   static getJsonForm(jsonFormId: number): JsonForm {
     switch (jsonFormId) {

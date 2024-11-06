@@ -14,7 +14,6 @@ import { WebFormControlName } from './models/web-from-control-name.enum';
 export class WebFormService {
   constructor(
     private repository: WebFormRepository,
-    private localStorageService: AppStorageService,
   ) {}
   loadForm(webFormId: number): Observable<JsonForm> {
     return this.repository.loadForm(webFormId).pipe(
@@ -45,7 +44,7 @@ export class WebFormService {
   }
 
   convertFormToLoadModel(form: JsonForm, formValue: Partial<WebFormModel>): JsonForm {
-    if (formValue || form?.id === formValue?.id) {
+    if (form?.id === formValue?.id) {
       const updatedControls = form.controls.map((control) => {
         const updatedControl = { ...control };
 
@@ -83,10 +82,5 @@ export class WebFormService {
     } else {
       return form;
     }
-  }
-
-  getFakeForm(): Observable<any> {
-    const result: null = null;
-    return of(result);
   }
 }

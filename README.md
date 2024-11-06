@@ -28,5 +28,5 @@
 4. `shared` (standalone компоненты) — сущности, в основе обёртки для элементов управления формой
 
 ## Библиотеки и инструменты извне
-1. `UntilDestroy` (библиотека) — для более удобной отписки, делается внутри пайпа `someObservable.pipe(untilDestroyed(this)).subscripe(...)`, так же нужен декоратор @UntilDestroy() перед декоратором @Component()
+1. `UntilDestroy` (библиотека) — для более удобной отписки, делается внутри пайпа `someObservable.pipe(untilDestroyed(this)).subscribe(...)`, так же нужен декоратор @UntilDestroy() перед декоратором @Component()
 2. `Prettier ` (инструмент) — для форматирования кода

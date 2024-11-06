@@ -38,7 +38,9 @@ export type JsonFormValidators = {
   required?: boolean;
   /** Минимальная длинна поля */
   minLength?: number;
+  /** минимальное значение для input type="number" */
   min?: number;
+  /** максимальное значение для input type="number" */
   max?: number;
 };
 

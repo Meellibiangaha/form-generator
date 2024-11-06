@@ -14,13 +14,13 @@ const routes: Routes = [
   {
     path: '',
     component: WebFormComponent,
-    title: 'Анкета',
+    title: 'Создать анкету',
     resolve: { webForm: WebFormResolver },
   },
   {
     path: ':id',
     component: WebFormComponent,
-    title: 'Редактировать Анкету',
+    title: 'Редактировать анкету',
     resolve: { webForm: WebFormResolver },
   },
 ];

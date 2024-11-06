@@ -12,9 +12,7 @@ import { WebFormControlName } from './models/web-from-control-name.enum';
   providedIn: 'any',
 })
 export class WebFormService {
-  constructor(
-    private repository: WebFormRepository,
-  ) {}
+  constructor(private repository: WebFormRepository) {}
   loadForm(webFormId: number): Observable<JsonForm> {
     return this.repository.loadForm(webFormId).pipe(
       catchError((reason) => {
@@ -45,6 +43,9 @@ export class WebFormService {
 
   convertFormToLoadModel(form: JsonForm, formValue: Partial<WebFormModel>): JsonForm {
     if (form?.id === formValue?.id) {
+      /** Проходимся по jsonForm и вставляем значения со стореджа
+       * Я постарался максимально всё типизировать и написать enum'ы
+       */
       const updatedControls = form.controls.map((control) => {
         const updatedControl = { ...control };
 

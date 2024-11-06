@@ -21,6 +21,7 @@ export class WebFormGenerateFormService {
       case InputTypeEnum.InputText:
         return this.fb.array(
           control.inputTextItems
+          // [['text1], [text2]] -> [text1, text2]
             .join(' ')
             .split(' ')
             .map((item: string) => this.fb.control(item, this.createValidation(controlValidators))),

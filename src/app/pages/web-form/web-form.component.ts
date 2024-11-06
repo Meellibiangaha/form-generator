@@ -115,13 +115,12 @@ export class WebFormComponent implements OnInit {
         if (c.name === option.controlName) {
           return {
             ...c,
-            // Если добавляем, вставляем inputTextItems только в нужное место
             inputTextItems: option.isAdd
               ? [...(c.inputTextItems ?? []), option.value]
               : c.inputTextItems.filter((_, i) => i !== option.index),
           };
         }
-        return c; // Остальные контролы возвращаем без изменений
+        return c;
       }),
     }));
     this.updateWebFormDataValue();
@@ -162,6 +161,9 @@ export class WebFormComponent implements OnInit {
   }
 
   generateForm(webForm: JsonForm): void {
+    /** Основная логика генерации формы
+     *  Я раздробил и вынес логику создания formArray и валидации в сервис web-form-generate-form.service
+     */
     for (const control of webForm.controls) {
       switch (control.type) {
         case InputTypeEnum.InputCheckbox:

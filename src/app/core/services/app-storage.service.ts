@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 
+/** Простая обёртка над локалстореджем */
+
 @Injectable({
   providedIn: 'root',
 })
